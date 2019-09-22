@@ -20,12 +20,17 @@ public class Controller {
 		List<Student> listStudent = new ArrayList<Student>();
 		for(Student student: model.getAllStudent())
 		{
-			if(student.getHoTen().equals(name))
+			if(student.getFull_name().equals(name))
 			{
 				listStudent.add(student);
 			}
 		}
 		return listStudent;
+	}
+	
+	public void insertStudent(Student student)
+	{
+		model.insertStudents(student);
 	}
 }
 

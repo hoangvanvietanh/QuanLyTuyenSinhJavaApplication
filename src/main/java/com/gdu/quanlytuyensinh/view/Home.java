@@ -13,6 +13,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.gdu.quanlytuyensinh.controller.Controller;
+import com.gdu.quanlytuyensinh.entity.Scores;
 import com.gdu.quanlytuyensinh.entity.Student;
 import com.gdu.quanlytuyensinh.model.Model;
 
@@ -29,6 +30,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class Home extends JFrame {
 
@@ -66,6 +68,7 @@ public class Home extends JFrame {
 	 * Create the frame.
 	 */
 	public Home() {
+		setBackground(Color.WHITE);
 		Controller controller = new Controller();
 		Model model = new Model();
 		List<Student> listStudent = model.getAllStudent();
@@ -74,17 +77,18 @@ public class Home extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 669, 338);
 		contentPane = new JPanel();
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		Panel panel = new Panel();
-		panel.setBounds(104, 29, 523, 208);
+		panel.setBounds(103, 46, 523, 208);
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(125, 82, 307, 114);
+		scrollPane.setBounds(125, 94, 307, 114);
 		panel.add(scrollPane);
 		
 		tableAllStudent = new JTable();
@@ -101,8 +105,8 @@ public class Home extends JFrame {
 		Object rowData[] = new Object[2];
 		for(Student s: listStudent)
 		{
-			rowData[0] = s.getHoTen();
-			rowData[1] = s.getLop();
+			rowData[0] = s.getFull_name();
+			rowData[1] = s.getStudent_class().getClass_name();
 			defaultTableModel.addRow(rowData);
 		}
 		textFindStudent = new JTextField();

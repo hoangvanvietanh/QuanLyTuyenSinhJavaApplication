@@ -7,6 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.gdu.quanlytuyensinh.controller.Controller;
+import com.gdu.quanlytuyensinh.entity.Student;
+import com.gdu.quanlytuyensinh.entity.StudentClass;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.JLabel;
@@ -19,6 +22,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JToggleButton;
 import javax.swing.JEditorPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import java.util.Date;
@@ -27,6 +31,12 @@ import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ButtonGroup;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.awt.event.ActionEvent;
 
 public class AddStudent extends JFrame {
 
@@ -55,6 +65,8 @@ public class AddStudent extends JFrame {
 	 * Create the frame.
 	 */
 	public AddStudent() {
+		Date dateNow = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 463, 399);
@@ -71,6 +83,8 @@ public class AddStudent extends JFrame {
 		panel_1.setLayout(null);
 		
 		JDateChooser txtDateChoseNgaySinh = new JDateChooser();
+		txtDateChoseNgaySinh.setDateFormatString("dd/MM/yyyy");;
+		txtDateChoseNgaySinh.setDate(dateNow);
 		txtDateChoseNgaySinh.setBounds(120, 82, 255, 22);
 		panel_1.add(txtDateChoseNgaySinh);
 		
@@ -123,6 +137,7 @@ public class AddStudent extends JFrame {
 		
 		JRadioButton rdbtnNam = new JRadioButton("Nam");
 		buttonGroup.add(rdbtnNam);
+		rdbtnNam.setSelected(true);
 		rdbtnNam.setBounds(120, 162, 138, 23);
 		panel_1.add(rdbtnNam);
 		
@@ -146,10 +161,50 @@ public class AddStudent extends JFrame {
 		panel_1.add(cbChuyenNganh);
 		
 		JButton btnDongY = new JButton("Đồng ý");
+		btnDongY.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			
+					Student student = new Student();
+					student.setFull_name(textHoTen.getText());
+					student.setAddress(textDiaChi.getText());
+					
+					student.setDate_of_birth(dateFormat.format(txtDateChoseNgaySinh.getDate()));
+					
+					student.setIdentity_card_number(textCMND.getText());
+					student.setPassword(textCMND.getText());
+					student.setPlace_of_birth(textNoiSinh.getText());
+					if(rdbtnNam.isSelected())
+					{
+						student.setSex("Nam");
+					}
+					else
+					{
+						student.setSex("Nữ");
+					}
+					StudentClass studentClass = new StudentClass();
+					studentClass.setFaculty(cbNganhHoc.getSelectedItem().toString());
+					studentClass.setMajor(cbChuyenNganh.getSelectedItem().toString());
+					student.setStudent_class(studentClass);
+					student.setStatus("Đăng ký");
+					
+				    
+					student.setRegistration_date(textNgayDangKy.getText());
+					Controller controller = new Controller();
+					controller.insertStudent(student);
+					JOptionPane.showMessageDialog(getParent(), dateFormat.format(txtDateChoseNgaySinh.getDate()));
+				
+			}
+		});
 		btnDongY.setBounds(49, 322, 114, 25);
 		panel_1.add(btnDongY);
 		
 		JButton btnHuy = new JButton("Hủy");
+		btnHuy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setVisible(false);
+				dispose();
+			}
+		});
 		btnHuy.setBounds(261, 322, 114, 25);
 		panel_1.add(btnHuy);
 		
@@ -170,6 +225,7 @@ public class AddStudent extends JFrame {
 		textNgayDangKy.setEditable(false);
 		textNgayDangKy.setBounds(120, 279, 255, 19);
 		panel_1.add(textNgayDangKy);
+	    textNgayDangKy.setText(dateFormat.format(dateNow));
 		textNgayDangKy.setColumns(10);
 	}
 }
